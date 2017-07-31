@@ -1,3 +1,7 @@
+# Version 1.7.2
+
+Fix : Authentication indicator
+
 # Version 1.7.1
 
 Fix : PHP Notices with Oney Facily Pay support
