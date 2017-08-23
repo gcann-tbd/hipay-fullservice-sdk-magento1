@@ -1,10 +1,8 @@
 version: 2
-hosts:
-    local-magento.hipay.com: 127.0.0.1
 jobs:
   build:
     docker:
-      - image: ubuntu:16.04
+      - image: ubuntu:14.04
     environment:
       TZ: "/usr/share/zoneinfo/Europe/paris"
     steps:
@@ -12,7 +10,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install dependencies
-          command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip php php7.0-xml sshpass
+          command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip php php7.0-xml sshpass vim
       - run:
           name: Install Composer
           command: |
@@ -95,7 +93,7 @@ jobs:
           name: Up PHP 5.6 container
           command: |
             docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
-            sleep 60
+            echo "Wait 60sec to have ready container" && sleep 60
             curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
             curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
       - run:
