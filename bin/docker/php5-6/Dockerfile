@@ -47,7 +47,7 @@ RUN chmod +x /usr/local/bin/install-sampledata
 RUN sed -i -e 's/\/var\/www\/html/\/var\/www\/htdocs/' /etc/apache2/sites-available/000-default.conf
 
 # INSTALL MAGERUN
-RUN curl -O  https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
+RUN curl -O  https://files.magerun.net/n98-magerun.phar && \
     chmod +x ./n98-magerun.phar && \
     ./n98-magerun.phar selfupdate && \
     cp ./n98-magerun.phar /usr/local/bin/ && \
