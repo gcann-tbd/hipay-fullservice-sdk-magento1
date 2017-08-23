@@ -99,10 +99,10 @@ jobs:
               rm -rf bin/tests/errors/
             fi
       - run:
-        name: Stop PHP 5.6 container
-        command: |
-          docker-compose stop
-          docker-compose rm -fv
+          name: Stop PHP 5.6 container
+          command: |
+            docker-compose stop
+            docker-compose rm -fv
       - run:
           name: Load Docker image PHP 7.0 layer cache
           command: |
@@ -129,23 +129,23 @@ jobs:
             sleep 60
             curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
       - run:
-        name: Run tests
-        command: |
-          sh bin/tests/casper_run_circle.sh
-          junit-viewer --results=bin/tests/result.xml \
-            --save=bin/tests/report-php7-0.html --minify=false --contracted
-          if [ -d bin/tests/errors/ ]; then
-            mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0
-            cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0
-          fi
+          name: Launch Tests PHP 7.0
+          command: |
+            sh bin/tests/casper_run_circle.sh
+            junit-viewer --results=bin/tests/result.xml \
+              --save=bin/tests/report-php7-0.html --minify=false --contracted
+            if [ -d bin/tests/errors/ ]; then
+              mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0
+              cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0
+            fi
       - run:
-        name: Get reports as artefacts
-        command: |
-          cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
-          cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
+          name: Get reports as artefacts
+          command: |
+            cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
+            cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
       - deploy:
-        name: Push module Magento1 to Docker-Machine
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-            sh ./bin/deployment/deploy_staging.sh
-          fi
+          name: Push module Magento1 to Docker-Machine
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              sh ./bin/deployment/deploy_staging.sh
+            fi
