@@ -69,8 +69,7 @@ jobs:
       - run:    
           name: Build application Docker image PHP 5.6
           command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage.yml \
-              build --cache-from=php5-6 -t php5-6 .
+            docker-compose -f docker-compose.yml -f docker-compose.stage.yml build
       - run:
           name: Save Docker image PHP 5.6 layer cache
           command: |
@@ -111,8 +110,7 @@ jobs:
       - run:    
           name: Build application Docker image PHP 7.0
           command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml \
-              build --cache-from=php7-0 -t php7-0 .
+            docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build
       - run:
           name: Save Docker image PHP 7.0 layer cache
           command: |
