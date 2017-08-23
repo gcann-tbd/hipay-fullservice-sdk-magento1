@@ -12,7 +12,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install dependencies
-          command: apt-get update && apt-get install -y curl wget bzip2 npm docker-compose sshpass
+          command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip sshpass
       - run:
           name: Install Docker client
           command: |
@@ -21,6 +21,9 @@ jobs:
             curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
+      - run:
+          name: Install Docker Compose
+          command: pip install docker-compose
       - run:
           name: Install PhantomJS
           command: |
@@ -55,6 +58,8 @@ jobs:
             mkdir $CIRCLE_ARTIFACTS/casper_report
             mkdir $CIRCLE_ARTIFACTS/screenshots
             sh bin/docker/generate_dockerfile.sh
+            docker --version
+            docker-compose --version
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
