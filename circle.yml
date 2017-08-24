@@ -1,13 +1,11 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: ubuntu:16.04
+    machine: true
     environment:
       TZ: "/usr/share/zoneinfo/Europe/paris"
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip php php7.0-xml sshpass vim libfontconfig
@@ -20,14 +18,14 @@ jobs:
             php -r "unlink('composer-setup.php');"
             mv composer.phar /usr/local/bin/composer
             chmod a+x /usr/local/bin/composer
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
+      # - run:
+      #     name: Install Docker client
+      #     command: |
+      #       set -x
+      #       VER="17.03.0-ce"
+      #       curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+      #       tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+      #       mv /tmp/docker/* /usr/bin
       - run:
           name: Install Docker Compose
           command: pip install docker-compose
