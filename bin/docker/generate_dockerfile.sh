@@ -24,3 +24,7 @@ cp -f docker-compose.stage.yml docker-compose.stage-php5-3.yml
 sed -i -e "s/php5-6/php5-4/" docker-compose.stage-php5-4.yml
 sed -i -e "s/php5-6/php7-0/" docker-compose.stage-php7-0.yml
 sed -i -e "s/php5-6/php5-3/" docker-compose.stage-php5-3.yml
+
+sed -i -e "s/php5_6/php5_4" docker-compose.stage-php5-4.yml
+sed -i -e "s/php5_6/php7_0" docker-compose.stage-php7-0.yml
+sed -i -e "s/php5_6/php5_3" docker-compose.stage-php5-3.yml

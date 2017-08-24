@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./bin/docker/php5-6/Dockerfile
       cache_from:
-        - php5-6:php5-6
+        - magento1_web_php5_6
     image: magento1_web_php5_6
     ports:
         - "80:80"
