@@ -10,7 +10,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install dependencies
-          command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip php php7.0-xml sshpass vim
+          command: apt-get update && apt-get install -y curl wget bzip2 npm python-pip php php7.0-xml sshpass vim libfontconfig
       - run:
           name: Install Composer
           command: |
@@ -70,6 +70,7 @@ jobs:
             - v1-{{ .Branch }}
           paths:
             - /caches/php5-6.tar
+            - /caches/mysql-smtp.tar
             - /caches/php7-0.tar
       - run:
           name: Load Docker image PHP 5.6 layer cache
@@ -84,11 +85,16 @@ jobs:
           name: Save Docker image PHP 5.6 layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/php5-6.tar magento1_web_php5_6
+            docker save -o /caches/php5-6.tar magento1_web_php5_6 php:5.6-apache
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/php5-6.tar
+      - run:
+          name: Load Docker Compose images
+          command: |
+            set +o pipefail
+            docker load -i /caches/mysql-smtp.tar | true
       - run:
           name: Up PHP 5.6 container
           command: |
@@ -96,6 +102,15 @@ jobs:
             echo "Wait 60sec to have ready container" && sleep 60
             curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
             curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
+      - run:
+          name: Save Docker Compose images
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/mysql-smtp.tar mysql:5.6.23 schickling/mailcatcher
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/mysql-smtp.tar
       - run:
           name: Launch Tests PHP 5.6
           command: |
@@ -128,7 +143,7 @@ jobs:
           name: Save Docker image PHP 7.0 layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/php7-0.tar magento1_web_php7_0
+            docker save -o /caches/php7-0.tar magento1_web_php7_0 php:7.0-apache
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
