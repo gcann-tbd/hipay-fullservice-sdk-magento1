@@ -105,7 +105,6 @@ jobs:
       - run:
           name: Save Docker Compose images
           command: |
-            mkdir -p /caches
             docker save -o /caches/mysql-smtp.tar mysql:5.6.23 schickling/mailcatcher
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
@@ -147,7 +146,6 @@ jobs:
       - run:
           name: Save Docker image PHP 7.0 layer cache
           command: |
-            mkdir -p /caches
             docker save -o /caches/php7-0.tar magento1_web_php7_0 php:7.0-apache
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
